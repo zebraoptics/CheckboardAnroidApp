@@ -9,7 +9,8 @@ This is a simple Android Studio project written in Kotlin. In general, it takes 
 
 
 ## How to Set Up the Project
-Create a New Project:
+
+### Create a New Project:
 
 Open Android Studio.
 
@@ -21,7 +22,7 @@ Give your project a name (e.g., CheckerboardApp) and a package name (e.g., com.e
 
 Click "Finish".
 
-Add Material Design Dependency (Optional but Recommended):
+### Add Material Design Dependency (Optional but Recommended):
 
 Open your module-level build.gradle.kts (or build.gradle) file.
 
@@ -31,7 +32,7 @@ implementation("com.google.android.material:material:1.12.0")
 
 Sync your project with the Gradle files.
 
-Copy the Code Files:
+### Copy the Code Files:
 
 activity_main.xml: Replace the contents of app/src/main/res/layout/activity_main.xml with the code provided.
 
