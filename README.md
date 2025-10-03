@@ -15,6 +15,7 @@ This is a simple Android Studio project written in Kotlin. In general, it takes 
 
 Note that the pattern will use the max available pixels in the relatively "shorter" axis. Other area will be white background.
 
+
 <img src="./imgs/pattern_activity.png" width="320" height="512" />
 
 ## The checkerboard in camera calibration
