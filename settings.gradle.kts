@@ -19,6 +19,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CheckerboardView"
+rootProject.name = "PatternView"
 include(":app")
- 
+include(":opencv")
+project(":opencv").projectDir = file("opencv")
+include(":opencv_contrib")

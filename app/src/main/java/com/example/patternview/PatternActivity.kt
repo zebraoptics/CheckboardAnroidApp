@@ -1,0 +1,62 @@
+package com.example.patternview
+
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GestureDetectorCompat
+import org.opencv.android.OpenCVLoader
+
+class PatternActivity : AppCompatActivity() {
+
+    // Define constants for the intent extras to avoid typos
+    companion object {
+        const val EXTRA_ROWS = "EXTRA_ROWS"
+        const val EXTRA_COLS = "EXTRA_COLS"
+        const val EXTRA_PATTERN = "EXTRA_PATTERN"
+
+        init {
+            if (!OpenCVLoader.initDebug()) {
+                Log.d("OpenCV", "Internal OpenCV library not found. Using OpenCV Manager for initialization")
+            } else {
+                Log.d("OpenCV", "OpenCV library found inside package. Using it!")
+            }
+        }
+    }
+
+    private lateinit var gestureDetector: GestureDetectorCompat
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_pattern)
+
+        // Retrieve row and column counts from the intent
+        val rows = intent.getIntExtra(EXTRA_ROWS, 0)
+        val cols = intent.getIntExtra(EXTRA_COLS, 0)
+        val pattern = intent.getStringExtra(EXTRA_PATTERN)
+
+        val patternView = findViewById<PatternView>(R.id.patternView)
+        if (pattern != null) {
+            patternView.setBoardDimensions(rows, cols, pattern)
+        }
+
+        // Initialize the gesture detector to listen for double taps
+        gestureDetector = GestureDetectorCompat(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDoubleTap(e: MotionEvent): Boolean {
+                // When a double tap occurs, finish this activity to return to the previous one
+                finish()
+                return true
+            }
+        })
+
+        // Set an on-touch listener on the view to pass events to the gesture detector
+        patternView.setOnTouchListener { _, event ->
+            gestureDetector.onTouchEvent(event)
+            // Return true to indicate that we have handled the touch event
+            true
+        }
+    }
+}
