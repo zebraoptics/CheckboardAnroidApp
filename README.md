@@ -55,3 +55,14 @@ MainActivity.kt: Replace the contents of app/src/main/java/com/example/checkerbo
 activity_checkerboard.xml: Right-click on the app/src/main/res/layout directory, select "New" -> "XML" -> "Layout XML File", name it activity_checkerboard.xml, and copy the provided code into it.
 
 CheckerboardActivity.kt: Right-click on your package directory (app/src/main/java/com/example/checkerboardapp), select "New" -> "Kotlin Class/File", name it CheckerboardActivity, and copy the provided code into it.
+
+## Update - Charuco pattern is available
+### Select Charuco pattern in dropdown and input the Charuco row and col numbers
+<img src="./imgs/Charuco_par.png" width="250" height="512" />
+
+### Click the "Generate Board" pattern to show the checkerboard pattern.
+ <img src="./imgs/charuco_screen.png" width="250" height="512" />
+
+### Detecting the patterns using OpenCV
+ <img src="./imgs/charuco.png" width="512" height="430" />
+
