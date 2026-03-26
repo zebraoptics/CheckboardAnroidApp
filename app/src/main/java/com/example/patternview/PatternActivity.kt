@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import org.opencv.android.OpenCVLoader
+import com.example.checkerboardview.R
 
 class PatternActivity : AppCompatActivity() {
 

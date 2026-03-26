@@ -26,6 +26,11 @@
             android:name=".CheckerboardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"/>
+
+        <activity
+            android:name="com.example.patternview.PatternActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"/>
     </application>
 
 </manifest>

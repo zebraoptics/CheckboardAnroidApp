@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CheckerboardView</string>
+    <string-array name="pattern_array">
+        <item>Checkerboard</item>
+        <item>ChArUco</item>
+    </string-array>
 </resources>

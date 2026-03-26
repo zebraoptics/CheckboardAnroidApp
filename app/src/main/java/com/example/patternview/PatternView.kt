@@ -79,10 +79,10 @@ class PatternView @JvmOverloads constructor(
     }
 
     private fun drawCharucoBoard(canvas: Canvas) {
-        val dictionary = Objdetect.getPredefinedDictionary(Objdetect.DICT_6X6_250)
+        val dictionary = Objdetect.getPredefinedDictionary(Objdetect.DICT_6X6_1000)
 
         val squareSize = min(width.toFloat() / cols, height.toFloat() / rows)
-        val markerSize = squareSize * 0.5f
+        val markerSize = squareSize * 0.8f
 
         val board = CharucoBoard(Size(cols.toDouble(), rows.toDouble()), squareSize, markerSize, dictionary)
 
