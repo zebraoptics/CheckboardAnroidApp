@@ -1,68 +1,108 @@
-# CheckboardAnroidApp
-Checkerboard is one of the mostly adapted patterns that are used for camera calibration. The checkerboard pattern are usually printed on a piece of papar and attached on a flat surface. However, there are two main challenges:
- - It is not flexible to use the printed pattern in terms of the checker size (col and row numbers).
- - The holder of the printed page may not be flat, resulting in calibration errors in the camera calibrations.
+# CameraCalibrationBoardAndroidApp
 
+An Android app (Kotlin) that displays checkerboard and ChArUco calibration patterns directly on screen — no printing required.
 
-This is a simple Android Studio project written in Kotlin. In general, it takes inputs of the row and col numbers of a checkerboard, and generate and show it in the next view.  It returns to the args page if double-clicking the checkerboard pattern. The display of a tablet or a smartphone are very flat. Additionaly, the dimension of the display are precisely described in the specification sheets in most of the cases. So the screen based checkerboard pattern could provide reliable object points in camera calibration tasks.
+## Motivation
 
-## How the APP works
-### Input the checkerboard row and col numbers
+Printed calibration boards have two practical limitations:
 
+- **Inflexible geometry** — the square size and row/column count are fixed at print time.
+- **Flatness issues** — a hand-held printed page is rarely perfectly flat, introducing systematic errors into camera calibration.
+
+A smartphone or tablet screen solves both problems. The display surface is optically flat, and the physical pixel pitch is precisely documented in the device spec sheet — giving you reliable, measurable object points without any physical board.
+
+## Features
+
+- Generate **checkerboard** or **ChArUco** patterns on demand
+- Adjustable **row and column counts** via input fields
+- Pattern automatically fills the shorter screen axis, maximizing size while keeping aspect ratio correct
+- Double-tap the pattern to return to the parameter input screen
+- Works on both smartphones and tablets
+
+## Screenshots
+
+### Input parameters
 <img src="./imgs/input_activity.png" width="320" height="512" />
 
-### Click the "Generate Board" pattern to show the checkerboard pattern.
-
-Note that the pattern will use the max available pixels in the relatively "shorter" axis. Other area will be white background.
-
-
+### Checkerboard pattern output
 <img src="./imgs/pattern_activity.png" width="320" height="512" />
 
-## The checkerboard in camera calibration
-
-<img src="./imgs/checkerboard_tablet.png" width="512" height="320" />
-
-## How to Set Up the Project
-
-### Create a New Project:
-
-Open Android Studio.
-
-Select "New Project" -> "Empty Views Activity".
-
-Choose "Kotlin" as the language.
-
-Give your project a name (e.g., CheckerboardApp) and a package name (e.g., com.example.checkerboardapp).
-
-Click "Finish".
-
-### Add Material Design Dependency (Optional but Recommended):
-
-Open your module-level build.gradle.kts (or build.gradle) file.
-
-Ensure the Material Components library is included in the dependencies block. It's usually there by default in new projects.
-
-implementation("com.google.android.material:material:1.12.0")
-
-Sync your project with the Gradle files.
-
-### Copy the Code Files:
-
-activity_main.xml: Replace the contents of app/src/main/res/layout/activity_main.xml with the code provided.
-
-MainActivity.kt: Replace the contents of app/src/main/java/com/example/checkerboardapp/MainActivity.kt with the code provided. (Make sure the package name at the top matches your project's package name).
-
-activity_checkerboard.xml: Right-click on the app/src/main/res/layout directory, select "New" -> "XML" -> "Layout XML File", name it activity_checkerboard.xml, and copy the provided code into it.
-
-CheckerboardActivity.kt: Right-click on your package directory (app/src/main/java/com/example/checkerboardapp), select "New" -> "Kotlin Class/File", name it CheckerboardActivity, and copy the provided code into it.
-
-## Update - Charuco pattern is available
-### Select Charuco pattern in dropdown and input the Charuco row and col numbers
+### ChArUco parameter input
 <img src="./imgs/Charuco_par.png" width="250" height="512" />
 
-### Click the "Generate Board" pattern to show the checkerboard pattern.
- <img src="./imgs/charuco_screen.png" width="250" height="512" />
+### ChArUco pattern output
+<img src="./imgs/charuco_screen.png" width="250" height="512" />
 
-### Detecting the patterns using OpenCV
- <img src="./imgs/charuco.png" width="512" height="430" />
+### In use — tablet as calibration target
+<img src="./imgs/checkerboard_tablet.png" width="512" height="320" />
 
+### ChArUco detection with OpenCV
+<img src="./imgs/charuco.png" width="512" height="430" />
+
+## Getting started
+
+### Prerequisites
+
+- Android Studio (Hedgehog or later)
+- Kotlin support enabled (default in new projects)
+- Min SDK: API 24 (Android 7.0) or higher recommended
+
+### Installation
+
+1. **Clone the repo**
+
+```bash
+git clone https://github.com/zebraoptics/CameraCalibrationBoardAndroidApp.git
+```
+
+2. **Open in Android Studio**
+
+   File → Open → select the cloned folder.
+
+3. **Sync Gradle**
+
+   Android Studio will prompt you to sync. Accept and wait for dependencies to resolve. The Material Components library is required:
+
+```groovy
+implementation("com.google.android.material:material:1.12.0")
+```
+
+4. **Run on device or emulator**
+
+   Connect your Android device or start an emulator, then click **Run**.
+
+## Using the app
+
+1. Select pattern type — **Checkerboard** or **ChArUco** — from the dropdown
+2. Enter the desired **row** and **column** counts
+3. Tap **Generate Board** to display the pattern full-screen
+4. **Double-tap** the pattern to return to the input screen
+
+## Using the pattern for camera calibration
+
+The on-screen pattern can be used directly with OpenCV's calibration pipeline. The physical square size can be derived from your device's screen resolution and pixel pitch (available in the device spec sheet).
+
+```python
+import cv2
+import numpy as np
+
+# Example: checkerboard with known square size in meters
+square_size = 0.0195  # meters — measure or derive from device spec sheet
+pattern_size = (cols - 1, rows - 1)  # inner corners
+
+objp = np.zeros((pattern_size[0] * pattern_size[1], 3), np.float32)
+objp[:, :2] = np.mgrid[0:pattern_size[0], 0:pattern_size[1]].T.reshape(-1, 2)
+objp *= square_size
+
+# Find corners
+gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+ret, corners = cv2.findChessboardCorners(gray, pattern_size, None)
+```
+
+## Related project
+
+**[opencv_contrib_android](https://github.com/zebraoptics/opencv_contrib_android)** — Pre-built OpenCV 4.12 Android SDK with all `opencv_contrib` modules (including `aruco` and `charuco`) compiled in. Required if you want to detect ChArUco patterns in your own Android app.
+
+## License
+
+MIT
